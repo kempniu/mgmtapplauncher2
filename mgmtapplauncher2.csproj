@@ -123,9 +123,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\DefaultConfig.txt" />
   </ItemGroup>
   <ItemGroup>
