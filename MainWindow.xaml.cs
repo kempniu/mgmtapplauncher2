@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using mgmtapplauncher2.Language;
+using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -56,7 +57,7 @@ namespace mgmtapplauncher2
 			if (File.Exists(App.GetConfigFile()) == false)
 			{
 				MessageBoxResult mbr = MessageBox.Show(
-					"Nie znaleziono pliku konfiguracyjnego. Czy chcesz skorzystać z domyślnych ustawień?",
+					Strings.MessageConfigNotFound,
 					App.GetName(),
 					MessageBoxButton.YesNo,
 					MessageBoxImage.Question
@@ -167,7 +168,7 @@ namespace mgmtapplauncher2
 					protocol = "";
 					host = "";
 					MessageBox.Show(
-						"Nieprawidłowy format URI!",
+						Strings.MessageIncorrectURIFormat,
 						App.GetName(),
 						MessageBoxButton.OK,
 						MessageBoxImage.Error
@@ -184,7 +185,7 @@ namespace mgmtapplauncher2
 				{
 					if (protocol.Length > 0)
 						MessageBox.Show(
-							String.Format("Protokół \"{0}\" nie jest obsługiwany!", protocol),
+							String.Format(Strings.MessageProtocolNotSupported, protocol),
 							App.GetName(),
 							MessageBoxButton.OK,
 							MessageBoxImage.Error
@@ -203,7 +204,7 @@ namespace mgmtapplauncher2
 					catch
 					{
 						MessageBox.Show(
-							String.Format("Nie udało się uruchomić programu \"{0}\"!", p.App),
+							String.Format(Strings.MessageFailedToStartProgram, p.App),
 							App.GetName(),
 							MessageBoxButton.OK,
 							MessageBoxImage.Error
@@ -220,7 +221,7 @@ namespace mgmtapplauncher2
 		private void BBrowse_Click(object sender, RoutedEventArgs e)
 		{
 			Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-			ofd.Filter = "Pliki wykonywalne|*.exe";
+			ofd.Filter = Strings.FilterExecutableFiles;
 			Nullable<bool> result = ofd.ShowDialog();
 			if (result == true)
 				((Protocol)CBProtocol.SelectedItem).App = ofd.FileName;
@@ -241,7 +242,7 @@ namespace mgmtapplauncher2
 				{
 					CBProtocol.SelectedItem = protocol;
 					MessageBox.Show(
-						"Protokół \"" + protocol.Name + "\" nie ma przypisanej żadnej aplikacji!",
+						String.Format(Strings.MessageNoProtocolApp, protocol.Name),
 						App.GetName(),
 						MessageBoxButton.OK,
 						MessageBoxImage.Warning
@@ -265,7 +266,7 @@ namespace mgmtapplauncher2
 			File.WriteAllLines(App.GetConfigFile(), config);
 
 			MessageBox.Show(
-				"Ustawienia zostały zapisane!",
+				Strings.MessageSettingsSaved,
 				App.GetName(),
 				MessageBoxButton.OK,
 				MessageBoxImage.Information

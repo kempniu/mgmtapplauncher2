@@ -1,4 +1,5 @@
-﻿using System;
+﻿using mgmtapplauncher2.Language;
+using System;
 using System.Windows;
 
 namespace mgmtapplauncher2
@@ -18,7 +19,7 @@ namespace mgmtapplauncher2
 			name = TBProtocolName.Text;
 			if (name.Length == 0)
 				MessageBox.Show(
-					"Nazwa protokołu nie może być pusta!",
+					Strings.MessageEmptyProtocolName,
 					App.GetName(),
 					MessageBoxButton.OK,
 					MessageBoxImage.Warning
