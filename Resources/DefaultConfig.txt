@@ -1,0 +1,12 @@
+[rdp]
+app=C:\WINDOWS\SYSTEM32\mstsc.exe
+args=/v:%H%
+
+[ssh]
+app=C:\putty.exe
+args=-%P% %H%
+
+[telnet]
+app=C:\putty.exe
+args=-%P% %H%
+
