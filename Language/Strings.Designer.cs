@@ -160,6 +160,15 @@ namespace mgmtapplauncher2.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error parsing configuration file {0}!.
+        /// </summary>
+        public static string MessageConfigCorrupt {
+            get {
+                return ResourceManager.GetString("MessageConfigCorrupt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configuration file not found. Would you like to use default settings?.
         /// </summary>
         public static string MessageConfigNotFound {
@@ -210,6 +219,15 @@ namespace mgmtapplauncher2.Language {
         public static string MessageProtocolNotSupported {
             get {
                 return ResourceManager.GetString("MessageProtocolNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error saving settings to {0}!.
+        /// </summary>
+        public static string MessageSettingsNotSaved {
+            get {
+                return ResourceManager.GetString("MessageSettingsNotSaved", resourceCulture);
             }
         }
         

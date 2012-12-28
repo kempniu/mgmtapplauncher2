@@ -123,10 +123,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\DefaultConfig.txt" />
+    <Resource Include="Resources\mgmtapplauncher2.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\mgmtapplauncher2.ico" />
+    <EmbeddedResource Include="Resources\DefaultConfig.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace mgmtapplauncher2
 {
@@ -9,6 +10,7 @@ namespace mgmtapplauncher2
 		private string app;
 
 		public string Name { get; set; }
+		[XmlIgnore]
 		public bool Handled { get; set; }
 		public string App
 		{

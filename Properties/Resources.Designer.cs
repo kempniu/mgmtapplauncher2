@@ -61,19 +61,24 @@ namespace mgmtapplauncher2.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [rdp]
-        ///app=C:\WINDOWS\SYSTEM32\mstsc.exe
-        ///args=/v:%H%
-        ///
-        ///[ssh]
-        ///app=C:\putty.exe
-        ///args=-%P% %H%
-        ///
-        ///[telnet]
-        ///app=C:\putty.exe
-        ///args=-%P% %H%
-        ///
-        ///.
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;Protocols xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+        ///  &lt;Protocol&gt;
+        ///    &lt;Name&gt;rdp&lt;/Name&gt;
+        ///    &lt;App&gt;C:\WINDOWS\SYSTEM32\mstsc.exe&lt;/App&gt;
+        ///    &lt;Args&gt;/v:%H%&lt;/Args&gt;
+        ///  &lt;/Protocol&gt;
+        ///  &lt;Protocol&gt;
+        ///    &lt;Name&gt;ssh&lt;/Name&gt;
+        ///    &lt;App&gt;C:\putty.exe&lt;/App&gt;
+        ///    &lt;Args&gt;-%P% %H%&lt;/Args&gt;
+        ///  &lt;/Protocol&gt;
+        ///  &lt;Protocol&gt;
+        ///    &lt;Name&gt;telnet&lt;/Name&gt;
+        ///    &lt;App&gt;C:\putty.exe&lt;/App&gt;
+        ///    &lt;Args&gt;-%P% %H%&lt;/Args&gt;
+        ///  &lt;/Protocol&gt;
+        ///&lt;/Protocols&gt;.
         /// </summary>
         internal static string DefaultConfig {
             get {

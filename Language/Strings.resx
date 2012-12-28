@@ -150,6 +150,9 @@
   <data name="LabelProtocol" xml:space="preserve">
     <value>Protocol:</value>
   </data>
+  <data name="MessageConfigCorrupt" xml:space="preserve">
+    <value>Error parsing configuration file {0}!</value>
+  </data>
   <data name="MessageConfigNotFound" xml:space="preserve">
     <value>Configuration file not found. Would you like to use default settings?</value>
   </data>
@@ -167,6 +170,9 @@
   </data>
   <data name="MessageProtocolNotSupported" xml:space="preserve">
     <value>Protocol "{0}" is not supported!</value>
+  </data>
+  <data name="MessageSettingsNotSaved" xml:space="preserve">
+    <value>Error saving settings to {0}!</value>
   </data>
   <data name="MessageSettingsSaved" xml:space="preserve">
     <value>Settings saved!</value>

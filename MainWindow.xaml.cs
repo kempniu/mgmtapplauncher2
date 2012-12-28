@@ -5,8 +5,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
+using System.Xml.Serialization;
 
 namespace mgmtapplauncher2
 {
@@ -15,13 +15,6 @@ namespace mgmtapplauncher2
 
 		// Property bound to combobox
 		public ObservableCollection<Protocol> Protocols { get; set; }
-
-		private string GetKeyValue(string line, string key)
-		{
-			Regex r = new Regex("^" + key + "=(.*)$");
-			Match m = r.Match(line);
-			return m.Groups[1].Value;
-		}
 
 		private void SaveRegistryKeyForProtocol(Protocol protocol)
 		{
@@ -51,7 +44,6 @@ namespace mgmtapplauncher2
 			DataContext = this;
 
 			bool defaultInit = false;
-			string[] config;
 			Protocol p = null;
 
 			if (File.Exists(App.GetConfigFile()) == false)
@@ -69,7 +61,7 @@ namespace mgmtapplauncher2
 					File.WriteAllText(
 						App.GetConfigFile(),
 						new StreamReader(
-							System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("mgmtapplauncher2.Resources.DefaultConfig.txt")
+							System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("mgmtapplauncher2.Resources.DefaultConfig.xml")
 						).ReadToEnd()
 					);
 				}
@@ -77,41 +69,35 @@ namespace mgmtapplauncher2
 
 			try
 			{
-				config = File.ReadAllLines(App.GetConfigFile());
+				XmlRootAttribute xra = new XmlRootAttribute("Protocols");
+				XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Protocol>), xra);
+				StreamReader tr = new StreamReader(App.GetConfigFile());
+				Protocols = (ObservableCollection<Protocol>)xs.Deserialize(tr);
+				tr.Close();
 			}
 			catch (FileNotFoundException)
 			{
-				config = new string[0];
+				// Assume the user will configure everything from scratch
 			}
-
-			foreach (string line in config)
+			catch (InvalidOperationException)
 			{
-				if (Regex.IsMatch(line, "^\\[[a-z]+\\]$"))
-				{
-					p = new Protocol() { Name = line.Substring(1, line.Length - 2) };
-					if (defaultInit)
-					{
-						p.Handled = true;
-						SaveRegistryKeyForProtocol(p);
-					}
-					Protocols.Add(p);
-				}
-				else if (Regex.IsMatch(line, "^app="))
-				{
-					if (p == null)
-						throw new System.NullReferenceException();
-					p.App = GetKeyValue(line, "app");
-
-				}
-				else if (Regex.IsMatch(line, "^args="))
-				{
-					if (p == null)
-						throw new System.NullReferenceException();
-					p.Args = GetKeyValue(line, "args");
-				}
+				MessageBox.Show(
+					String.Format(Strings.MessageConfigCorrupt, App.GetConfigFile()),
+					App.GetName(),
+					MessageBoxButton.OK,
+					MessageBoxImage.Error
+				);
 			}
 
-			if (!defaultInit)
+			if (defaultInit)
+			{
+				foreach (Protocol protocol in Protocols)
+				{
+					protocol.Handled = true;
+					SaveRegistryKeyForProtocol(protocol);
+				}
+			}
+			else
 			{
 				foreach (Protocol protocol in Protocols)
 				{
@@ -230,10 +216,8 @@ namespace mgmtapplauncher2
 		private void BSave_Click(object sender, RoutedEventArgs e)
 		{
 
-			string[] config = new string[Protocols.Count * 4];
-			int i = 0;
-
 			var sortedProtocols = from p in Protocols orderby p.Name select p;
+			ObservableCollection<Protocol> sortedProtocolsCollection = new ObservableCollection<Protocol>();
 
 			foreach (var protocol in sortedProtocols)
 			{
@@ -249,28 +233,39 @@ namespace mgmtapplauncher2
 					);
 					return;
 				}
+				else
+				{
+					sortedProtocolsCollection.Add(protocol);
+					SaveRegistryKeyForProtocol(protocol);
+				}
 			}
 
-			foreach (var protocol in sortedProtocols)
+			try
 			{
 
-				config[i++] = "[" + protocol.Name + "]";
-				config[i++] = "app=" + protocol.App;
-				config[i++] = "args=" + protocol.Args;
-				config[i++] = "";
+				XmlRootAttribute xra = new XmlRootAttribute("Protocols");
+				XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Protocol>), xra);
+				TextWriter tw = new StreamWriter(App.GetConfigFile());
+				xs.Serialize(tw, sortedProtocolsCollection);
+				tw.Close();
 
-				SaveRegistryKeyForProtocol(protocol);
+				MessageBox.Show(
+					Strings.MessageSettingsSaved,
+					App.GetName(),
+					MessageBoxButton.OK,
+					MessageBoxImage.Information
+				);
 
 			}
-
-			File.WriteAllLines(App.GetConfigFile(), config);
-
-			MessageBox.Show(
-				Strings.MessageSettingsSaved,
-				App.GetName(),
-				MessageBoxButton.OK,
-				MessageBoxImage.Information
-			);
+			catch
+			{
+				MessageBox.Show(
+					String.Format(Strings.MessageSettingsNotSaved, App.GetConfigFile()),
+					App.GetName(),
+					MessageBoxButton.OK,
+					MessageBoxImage.Error
+				);
+			}
 
 		}
 

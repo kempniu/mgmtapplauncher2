@@ -15,7 +15,7 @@ namespace mgmtapplauncher2
 
 		public static string GetConfigFile()
 		{
-			return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\mgmtapplauncher2.ini";
+			return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\mgmtapplauncher2.xml";
 		}
 
 		private void Application_Startup(object sender, StartupEventArgs e)

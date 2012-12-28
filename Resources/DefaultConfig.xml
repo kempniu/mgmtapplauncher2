@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Protocols xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Protocol>
+    <Name>rdp</Name>
+    <App>C:\WINDOWS\SYSTEM32\mstsc.exe</App>
+    <Args>/v:%H%</Args>
+  </Protocol>
+  <Protocol>
+    <Name>ssh</Name>
+    <App>C:\putty.exe</App>
+    <Args>-%P% %H%</Args>
+  </Protocol>
+  <Protocol>
+    <Name>telnet</Name>
+    <App>C:\putty.exe</App>
+    <Args>-%P% %H%</Args>
+  </Protocol>
+</Protocols>
