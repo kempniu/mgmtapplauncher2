@@ -1,7 +1,7 @@
 ﻿<Window x:Class="mgmtapplauncher2.ProtocolNamePopup"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Podaj nazwę" Height="150" Width="200" Icon="wrench.ico" ResizeMode="NoResize"
+        Title="Podaj nazwę" Height="150" Width="200" Icon="Resources/mgmtapplauncher2.ico" ResizeMode="NoResize"
         FocusManager.FocusedElement="{Binding ElementName=TBProtocolName}">
     <Grid>
         <Grid.ColumnDefinitions>
