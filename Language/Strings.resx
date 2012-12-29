@@ -120,8 +120,14 @@
   <data name="ButtonAdd" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="ButtonDelete" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="ButtonOK" xml:space="preserve">
+    <value>OK</value>
   </data>
   <data name="ButtonQuit" xml:space="preserve">
     <value>Quit</value>
@@ -137,6 +143,9 @@
   </data>
   <data name="LabelApplication" xml:space="preserve">
     <value>Application:</value>
+  </data>
+  <data name="LabelEnterProtocolName" xml:space="preserve">
+    <value>Enter protocol name:</value>
   </data>
   <data name="LabelHandler" xml:space="preserve">
     <value>Handler:</value>
@@ -179,5 +188,8 @@
   </data>
   <data name="TitleMainWindow" xml:space="preserve">
     <value>Management applications configuration</value>
+  </data>
+  <data name="TitleProtocolNameWindow" xml:space="preserve">
+    <value>Enter name</value>
   </data>
 </root>

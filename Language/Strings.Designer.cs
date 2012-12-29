@@ -70,11 +70,29 @@ namespace mgmtapplauncher2.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string ButtonCancel {
+            get {
+                return ResourceManager.GetString("ButtonCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string ButtonDelete {
             get {
                 return ResourceManager.GetString("ButtonDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string ButtonOK {
+            get {
+                return ResourceManager.GetString("ButtonOK", resourceCulture);
             }
         }
         
@@ -120,6 +138,15 @@ namespace mgmtapplauncher2.Language {
         public static string LabelApplication {
             get {
                 return ResourceManager.GetString("LabelApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter protocol name:.
+        /// </summary>
+        public static string LabelEnterProtocolName {
+            get {
+                return ResourceManager.GetString("LabelEnterProtocolName", resourceCulture);
             }
         }
         
@@ -246,6 +273,15 @@ namespace mgmtapplauncher2.Language {
         public static string TitleMainWindow {
             get {
                 return ResourceManager.GetString("TitleMainWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter name.
+        /// </summary>
+        public static string TitleProtocolNameWindow {
+            get {
+                return ResourceManager.GetString("TitleProtocolNameWindow", resourceCulture);
             }
         }
     }
