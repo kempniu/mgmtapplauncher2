@@ -37,6 +37,9 @@
   <PropertyGroup>
     <ApplicationIcon>Resources\mgmtapplauncher2.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -130,6 +133,12 @@
     <EmbeddedResource Include="Resources\DefaultConfig.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if $(ConfigurationName) == Release (
+    "$(wix)bin\candle.exe" "$(ProjectDir)WiX\mgmtapplauncher2.wxs"
+    "$(wix)bin\light.exe" "$(ProjectDir)WiX\mgmtapplauncher2.wixobj"
+)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
