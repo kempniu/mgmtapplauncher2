@@ -282,14 +282,16 @@ namespace mgmtapplauncher2
 		private void BDelete_Click(object sender, RoutedEventArgs e)
 		{
 			int selected = CBProtocol.SelectedIndex;
-			try
-			{
-				Registry.CurrentUser.DeleteSubKeyTree("Software\\Classes\\" + ((Protocol)CBProtocol.SelectedItem).Name);
-			}
-			catch (ArgumentException) { }
-			Protocols.Remove((Protocol)CBProtocol.SelectedItem);
 			if (selected > -1)
+			{
+				try
+				{
+					Registry.CurrentUser.DeleteSubKeyTree("Software\\Classes\\" + ((Protocol)CBProtocol.SelectedItem).Name);
+				}
+				catch (ArgumentException) { }
+				Protocols.Remove((Protocol)CBProtocol.SelectedItem);
 				CBProtocol.SelectedIndex = selected - 1;
+			}
 		}
 
 		private void BQuit_Click(object sender, RoutedEventArgs e)
