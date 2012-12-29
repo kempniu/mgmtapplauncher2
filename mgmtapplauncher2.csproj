@@ -121,6 +121,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="WiX\mgmtapplauncher2.wxs" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\mgmtapplauncher2.ico" />

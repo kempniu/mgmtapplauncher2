@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="90DB11DD-C5DA-4739-B694-051B635CCCB6" Codepage="65001" Language="1033" Manufacturer="Michał Kępień" Name="mgmtapplauncher2" UpgradeCode="A4740C02-3023-4121-A701-354B88D3DC5B" Version="2.1.0.0">
+    <Package Id="*" Compressed="yes" Description="Management Application Launcher" InstallerVersion="100"/>
+    <Media Id="1" Cabinet="mgmtapplauncher2.cab" EmbedCab="yes"/>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="mgmtapplauncher2Folder" Name="mgmtapplauncher2">
+          <Component Id="mgmtapplauncher2ExeComponent" Guid="B1223B98-DFEE-4ED6-9293-9E42CB50145B">
+            <File Id="mgmtapplauncher2Exe" DiskId="1" KeyPath="yes" Name="mgmtapplauncher2.exe" Source="..\bin\Release\mgmtapplauncher2.exe" Vital="yes">
+              <Shortcut Id="mgmtapplauncher2Shortcut" Advertise="yes" Directory="ProgramMenuFolder" Icon="mgmtapplauncher2.ico" Name="Management Application Configuration" WorkingDirectory="INSTALLDIR"/>
+            </File>
+          </Component>
+          <Directory Id="mgmtapplauncher2LanguagePLFolder" Name="pl-PL">
+            <Component Id="mgmtapplauncher2LanguagePLComponent" Guid="E66118B8-D9CA-4BCC-BA87-CDE26A554718">
+              <File Id="mgmtapplauncher2LanguagePL" DiskId="1" Name="mgmtapplauncher2.resources.dll" Source="..\bin\Release\pl-PL\mgmtapplauncher2.resources.dll"/>
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder" Name="Programs"/>
+    </Directory>
+    <Feature Id="mgmtapplauncher2Feature" Title="mgmtapplauncher2 Program" Level="1">
+      <ComponentRef Id="mgmtapplauncher2ExeComponent"/>
+      <ComponentRef Id="mgmtapplauncher2LanguagePLComponent"/>
+    </Feature>
+    <Icon Id="mgmtapplauncher2.ico" SourceFile="..\Resources\mgmtapplauncher2.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="mgmtapplauncher2.ico"/>
+  </Product>
+</Wix>
