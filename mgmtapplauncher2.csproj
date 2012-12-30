@@ -135,8 +135,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release (
-    "$(wix)bin\candle.exe" "$(ProjectDir)WiX\mgmtapplauncher2.wxs"
-    "$(wix)bin\light.exe" "$(ProjectDir)WiX\mgmtapplauncher2.wixobj"
+    "$(wix)bin\candle.exe" -o "$(ProjectDir)WiX\mgmtapplauncher2.wixobj" "$(ProjectDir)WiX\mgmtapplauncher2.wxs"
+    "$(wix)bin\light.exe" -o "$(ProjectDir)WiX\mgmtapplauncher2.msi" "$(ProjectDir)WiX\mgmtapplauncher2.wixobj"
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
