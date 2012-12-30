@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="90DB11DD-C5DA-4739-B694-051B635CCCB6" Codepage="65001" Language="1033" Manufacturer="Michał Kępień" Name="mgmtapplauncher2" UpgradeCode="A4740C02-3023-4121-A701-354B88D3DC5B" Version="2.1.0.0">
+  <Product Id="90DB11DD-C5DA-4739-B694-051B635CCCB6" Codepage="65001" Language="1033" Manufacturer="Michał Kępień" Name="mgmtapplauncher2" UpgradeCode="A4740C02-3023-4121-A701-354B88D3DC5B" Version="!(bind.FileVersion.mgmtapplauncher2Exe)">
     <Package Id="*" Compressed="yes" Description="Management Application Launcher" InstallerVersion="100"/>
     <Media Id="1" Cabinet="mgmtapplauncher2.cab" EmbedCab="yes"/>
     <Directory Id="TARGETDIR" Name="SourceDir">
