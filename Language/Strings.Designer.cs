@@ -142,6 +142,15 @@ namespace mgmtapplauncher2.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Author: Michał Kępień.
+        /// </summary>
+        public static string LabelAuthor {
+            get {
+                return ResourceManager.GetString("LabelAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter protocol name:.
         /// </summary>
         public static string LabelEnterProtocolName {
@@ -264,6 +273,15 @@ namespace mgmtapplauncher2.Language {
         public static string MessageSettingsSaved {
             get {
                 return ResourceManager.GetString("MessageSettingsSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string TitleAboutWindow {
+            get {
+                return ResourceManager.GetString("TitleAboutWindow", resourceCulture);
             }
         }
         

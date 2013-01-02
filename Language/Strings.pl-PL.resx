@@ -144,6 +144,9 @@
   <data name="LabelApplication" xml:space="preserve">
     <value>Aplikacja:</value>
   </data>
+  <data name="LabelAuthor" xml:space="preserve">
+    <value>Autor: Michał Kępień</value>
+  </data>
   <data name="LabelEnterProtocolName" xml:space="preserve">
     <value>Podaj nazwę protokołu:</value>
   </data>
@@ -185,6 +188,9 @@
   </data>
   <data name="MessageSettingsSaved" xml:space="preserve">
     <value>Ustawienia zostały zapisane!</value>
+  </data>
+  <data name="TitleAboutWindow" xml:space="preserve">
+    <value>O programie</value>
   </data>
   <data name="TitleMainWindow" xml:space="preserve">
     <value>Konfiguracja aplikacji zarządzających</value>
