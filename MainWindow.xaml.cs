@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace mgmtapplauncher2
 
 		// Property bound to combobox
 		public ObservableCollection<Protocol> Protocols { get; set; }
+		private string latestVersion;
 
 		private void SaveRegistryKeyForProtocol(Protocol protocol)
 		{
@@ -128,60 +130,10 @@ namespace mgmtapplauncher2
 
 				InitializeComponent();
 
-				try
-				{
-
-					WebClient wc = new WebClient();
-					Version current = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-					Version latest = new Version(wc.DownloadString("http://updates.kempniu.pl/mgmtapplauncher2/latest"));
-
-					if (current.CompareTo(latest) < 0)
-					{
-
-						MessageBoxResult mbr = MessageBox.Show(
-							String.Format(Strings.MessageUpdateAvailable, latest, App.GetName()),
-							App.GetName(),
-							MessageBoxButton.YesNo,
-							MessageBoxImage.Question
-						);
-
-						if (mbr == MessageBoxResult.Yes)
-						{
-							try
-							{
-
-								string tempinstaller = Path.GetTempFileName();
-								string installer = Path.GetDirectoryName(tempinstaller) + "\\mgmtapplauncher2.msi";
-
-								wc.DownloadFile("http://updates.kempniu.pl/mgmtapplauncher2/mgmtapplauncher2.msi", tempinstaller);
-
-								if (File.Exists(installer))
-									File.Delete(installer);
-								File.Move(tempinstaller, installer);
-
-								Process updater = new Process();
-								updater.StartInfo.FileName = "msiexec.exe";
-								updater.StartInfo.Arguments = "/i \"" + installer + "\" REINSTALL=ALL REINSTALLMODE=vomus";
-								updater.Start();
-
-								this.Close();
-
-							}
-							catch (WebException)
-							{
-								MessageBox.Show(
-									Strings.MessageUpdateDownloadFailed,
-									App.GetName(),
-									MessageBoxButton.OK,
-									MessageBoxImage.Error
-								);
-							}
-						}
-
-					}
-
-				}
-				catch { }
+				BackgroundWorker bw = new BackgroundWorker();
+				bw.DoWork += CheckForUpdates_GetLatestVersion;
+				bw.RunWorkerCompleted += CheckForUpdates_Update;
+				bw.RunWorkerAsync();
 
 			}
 			else
@@ -260,6 +212,75 @@ namespace mgmtapplauncher2
 
 			}
 
+		}
+
+		private void CheckForUpdates_GetLatestVersion(object sender, DoWorkEventArgs e)
+		{
+			try
+			{
+				latestVersion = new WebClient().DownloadString("http://updates.kempniu.pl/mgmtapplauncher2/latest");
+			}
+			catch (WebException)
+			{
+				latestVersion = "";
+			}
+		}
+
+		private void CheckForUpdates_Update(object sender, RunWorkerCompletedEventArgs e)
+		{
+			try
+			{
+
+				Version current = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+				Version latest = new Version(latestVersion);
+
+				if (current.CompareTo(latest) < 0)
+				{
+
+					MessageBoxResult mbr = MessageBox.Show(
+						String.Format(Strings.MessageUpdateAvailable, latest, App.GetName()),
+						App.GetName(),
+						MessageBoxButton.YesNo,
+						MessageBoxImage.Question
+					);
+
+					if (mbr == MessageBoxResult.Yes)
+					{
+						try
+						{
+
+							string tempinstaller = Path.GetTempFileName();
+							string installer = Path.GetDirectoryName(tempinstaller) + "\\mgmtapplauncher2.msi";
+
+							new WebClient().DownloadFile("http://updates.kempniu.pl/mgmtapplauncher2/mgmtapplauncher2.msi", tempinstaller);
+
+							if (File.Exists(installer))
+								File.Delete(installer);
+							File.Move(tempinstaller, installer);
+
+							Process updater = new Process();
+							updater.StartInfo.FileName = "msiexec.exe";
+							updater.StartInfo.Arguments = "/i \"" + installer + "\" REINSTALL=ALL REINSTALLMODE=vomus";
+							updater.Start();
+
+							this.Close();
+
+						}
+						catch (WebException)
+						{
+							MessageBox.Show(
+								Strings.MessageUpdateDownloadFailed,
+								App.GetName(),
+								MessageBoxButton.OK,
+								MessageBoxImage.Error
+							);
+						}
+					}
+
+				}
+
+			}
+			catch { }
 		}
 
 		private void BBrowse_Click(object sender, RoutedEventArgs e)
