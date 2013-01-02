@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Xml.Serialization;
 
@@ -124,7 +125,64 @@ namespace mgmtapplauncher2
 
 			if (App.args.Length == 0)
 			{
+
 				InitializeComponent();
+
+				try
+				{
+
+					WebClient wc = new WebClient();
+					Version current = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+					Version latest = new Version(wc.DownloadString("http://updates.kempniu.pl/mgmtapplauncher2/latest"));
+
+					if (current.CompareTo(latest) < 0)
+					{
+
+						MessageBoxResult mbr = MessageBox.Show(
+							String.Format(Strings.MessageUpdateAvailable, latest, App.GetName()),
+							App.GetName(),
+							MessageBoxButton.YesNo,
+							MessageBoxImage.Question
+						);
+
+						if (mbr == MessageBoxResult.Yes)
+						{
+							try
+							{
+
+								string tempinstaller = Path.GetTempFileName();
+								string installer = Path.GetDirectoryName(tempinstaller) + "\\mgmtapplauncher2.msi";
+
+								wc.DownloadFile("http://updates.kempniu.pl/mgmtapplauncher2/mgmtapplauncher2.msi", tempinstaller);
+
+								if (File.Exists(installer))
+									File.Delete(installer);
+								File.Move(tempinstaller, installer);
+
+								Process updater = new Process();
+								updater.StartInfo.FileName = "msiexec.exe";
+								updater.StartInfo.Arguments = "/i \"" + installer + "\" REINSTALL=ALL REINSTALLMODE=vomus";
+								updater.Start();
+
+								this.Close();
+
+							}
+							catch (WebException)
+							{
+								MessageBox.Show(
+									Strings.MessageUpdateDownloadFailed,
+									App.GetName(),
+									MessageBoxButton.OK,
+									MessageBoxImage.Error
+								);
+							}
+						}
+
+					}
+
+				}
+				catch (WebException) { }
+
 			}
 			else
 			{

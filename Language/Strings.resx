@@ -195,6 +195,12 @@
   <data name="MessageSettingsSaved" xml:space="preserve">
     <value>Settings saved!</value>
   </data>
+  <data name="MessageUpdateAvailable" xml:space="preserve">
+    <value>A newer version ({0}) of {1} is available. Would you like to install it?</value>
+  </data>
+  <data name="MessageUpdateDownloadFailed" xml:space="preserve">
+    <value>Failed to download update!</value>
+  </data>
   <data name="TitleAboutWindow" xml:space="preserve">
     <value>About</value>
   </data>

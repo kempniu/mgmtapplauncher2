@@ -295,6 +295,24 @@ namespace mgmtapplauncher2.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A newer version ({0}) of {1} is available. Would you like to install it?.
+        /// </summary>
+        public static string MessageUpdateAvailable {
+            get {
+                return ResourceManager.GetString("MessageUpdateAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to download update!.
+        /// </summary>
+        public static string MessageUpdateDownloadFailed {
+            get {
+                return ResourceManager.GetString("MessageUpdateDownloadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string TitleAboutWindow {
