@@ -181,7 +181,7 @@ namespace mgmtapplauncher2
 					}
 
 				}
-				catch (WebException) { }
+				catch { }
 
 			}
 			else
