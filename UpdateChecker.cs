@@ -11,12 +11,12 @@ namespace mgmtapplauncher2
 	class UpdateChecker : BackgroundWorker
 	{
 
-		private MainWindow parent;
-		private string latestVersion;
+		private MainWindow m_Parent;
+		private string m_LatestVersion;
 
 		public UpdateChecker(MainWindow p)
 		{
-			parent = p;
+			m_Parent = p;
 			this.DoWork += GetLatestVersion;
 			this.RunWorkerCompleted += Update;
 		}
@@ -25,11 +25,11 @@ namespace mgmtapplauncher2
 		{
 			try
 			{
-				latestVersion = new WebClient().DownloadString("http://updates.kempniu.pl/mgmtapplauncher2/latest");
+				m_LatestVersion = new WebClient().DownloadString("http://updates.kempniu.pl/mgmtapplauncher2/latest");
 			}
 			catch (WebException)
 			{
-				latestVersion = "";
+				m_LatestVersion = "";
 			}
 		}
 
@@ -39,7 +39,7 @@ namespace mgmtapplauncher2
 			{
 
 				Version current = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-				Version latest = new Version(latestVersion);
+				Version latest = new Version(m_LatestVersion);
 
 				if (current.CompareTo(latest) < 0)
 				{
@@ -70,7 +70,7 @@ namespace mgmtapplauncher2
 							updater.StartInfo.Arguments = "/i \"" + installer + "\" REINSTALL=ALL REINSTALLMODE=vomus";
 							updater.Start();
 
-							parent.Close();
+							m_Parent.Close();
 
 						}
 						catch (WebException)

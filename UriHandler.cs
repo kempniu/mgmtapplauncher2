@@ -7,13 +7,13 @@ namespace mgmtapplauncher2
 	class UriHandler
 	{
 
-		private Configuration configuration;
-		private string uri;
+		private Configuration m_Configuration;
+		private string m_Uri;
 
-		public UriHandler(Configuration c, string u)
+		public UriHandler(Configuration configuration, string uri)
 		{
-			configuration = c;
-			uri = u;
+			m_Configuration = configuration;
+			m_Uri = uri;
 		}
 
 		public void Handle()
@@ -27,22 +27,22 @@ namespace mgmtapplauncher2
 
 			try
 			{
-				pos1 = uri.IndexOf(':');
-				if (pos1 == -1 || uri.Substring(pos1, 3) != "://")
+				pos1 = m_Uri.IndexOf(':');
+				if (pos1 == -1 || m_Uri.Substring(pos1, 3) != "://")
 					throw new ArgumentException();
-				protocol = uri.Substring(0, pos1);
+				protocol = m_Uri.Substring(0, pos1);
 				pos1 += 3;
-				pos2 = uri.IndexOf('/', pos1);
+				pos2 = m_Uri.IndexOf('/', pos1);
 				if (pos2 == -1)
-					pos2 = uri.Length;
-				host = uri.Substring(pos1, pos2 - pos1);
+					pos2 = m_Uri.Length;
+				host = m_Uri.Substring(pos1, pos2 - pos1);
 			}
 			catch
 			{
 				throw new InvalidUriException();
 			}
 
-			p = configuration.GetProtocol(protocol);
+			p = m_Configuration.GetProtocol(protocol);
 
 			if (p == null)
 			{

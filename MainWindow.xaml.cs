@@ -7,15 +7,15 @@ namespace mgmtapplauncher2
 	public partial class MainWindow : Window
 	{
 
-		private Configuration c;
+		private Configuration m_Configuration;
 
 		public MainWindow()
 		{
 
-			c = new Configuration();
-			DataContext = c;
+			m_Configuration = new Configuration();
+			DataContext = m_Configuration;
 
-			if (App.args.Length == 0)
+			if (App.GetArgs().Length == 0)
 			{
 				InitializeComponent();
 				new UpdateChecker(this).RunWorkerAsync();
@@ -24,7 +24,7 @@ namespace mgmtapplauncher2
 			{
 				try
 				{
-					new UriHandler(c, App.args[0]).Handle();
+					new UriHandler(m_Configuration, App.GetArgs()[0]).Handle();
 				}
 				catch (InvalidUriException)
 				{
@@ -64,12 +64,12 @@ namespace mgmtapplauncher2
 			ofd.Filter = Strings.FilterExecutableFiles;
 			Nullable<bool> result = ofd.ShowDialog();
 			if (result == true)
-				c.SetProtocolApp((Protocol)CBProtocol.SelectedItem, ofd.FileName);
+				m_Configuration.SetProtocolApp((Protocol)CBProtocol.SelectedItem, ofd.FileName);
 		}
 
 		private void BSave_Click(object sender, RoutedEventArgs e)
 		{
-			c.Save();
+			m_Configuration.Save();
 		}
 
 		private void BAdd_Click(object sender, RoutedEventArgs e)
@@ -77,7 +77,7 @@ namespace mgmtapplauncher2
 			ProtocolNamePopup pnp = new ProtocolNamePopup();
 			if (pnp.ShowDialog() == true)
 			{
-				c.AddProtocol(pnp.name.ToLower(), true);
+				m_Configuration.AddProtocol(pnp.GetName().ToLower(), true);
 				CBProtocol.SelectedIndex = CBProtocol.Items.Count - 1;
 			}
 		}
@@ -87,7 +87,7 @@ namespace mgmtapplauncher2
 			int selected = CBProtocol.SelectedIndex;
 			if (selected > -1)
 			{
-				c.DeleteProtocol((Protocol)CBProtocol.SelectedItem);
+				m_Configuration.DeleteProtocol((Protocol)CBProtocol.SelectedItem);
 				CBProtocol.SelectedIndex = selected - 1;
 			}
 		}

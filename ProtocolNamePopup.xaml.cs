@@ -7,17 +7,22 @@ namespace mgmtapplauncher2
 	public partial class ProtocolNamePopup : Window
 	{
 
-		public string name = null;
+		private string m_Name = null;
 
 		public ProtocolNamePopup()
 		{
 			InitializeComponent();
 		}
 
+		public string GetName()
+		{
+			return m_Name;
+		}
+
 		private void BNameOK_Click(object sender, RoutedEventArgs e)
 		{
-			name = TBProtocolName.Text;
-			if (name.Length == 0)
+			m_Name = TBProtocolName.Text;
+			if (m_Name.Length == 0)
 				MessageBox.Show(
 					Strings.MessageEmptyProtocolName,
 					App.GetName(),

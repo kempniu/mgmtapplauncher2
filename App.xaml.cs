@@ -6,7 +6,7 @@ namespace mgmtapplauncher2
 	public partial class App : Application
 	{
 
-		public static string[] args;
+		private static string[] m_Args;
 
 		public static string GetName()
 		{
@@ -18,9 +18,14 @@ namespace mgmtapplauncher2
 			return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\mgmtapplauncher2.xml";
 		}
 
+		public static string[] GetArgs()
+		{
+			return m_Args;
+		}
+
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
-			args = e.Args;
+			m_Args = e.Args;
 		}
 
 	}
