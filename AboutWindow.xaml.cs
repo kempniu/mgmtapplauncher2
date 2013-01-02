@@ -8,7 +8,7 @@ namespace mgmtapplauncher2
 		public AboutWindow()
 		{
 			InitializeComponent();
-			LBuild.Content = "Build: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+			LBuild.Content = "Build: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			LGit.Content = "GIT: " + new System.IO.StreamReader(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("mgmtapplauncher2.Resources.GitCommit.txt")).ReadToEnd().Trim();
 		}
 
