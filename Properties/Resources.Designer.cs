@@ -87,6 +87,16 @@ namespace mgmtapplauncher2.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to d61f4825019ddcbf1c0d4785ae67568d14e22759
+        ///.
+        /// </summary>
+        internal static string GitCommit {
+            get {
+                return ResourceManager.GetString("GitCommit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon mgmtapplauncher2 {

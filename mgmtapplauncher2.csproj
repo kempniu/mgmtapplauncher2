@@ -139,12 +139,18 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\DefaultConfig.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\GitCommit.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release (
     "$(wix)bin\candle.exe" -o "$(ProjectDir)WiX\mgmtapplauncher2.wixobj" "$(ProjectDir)WiX\mgmtapplauncher2.wxs"
     "$(wix)bin\light.exe" -o "$(ProjectDir)WiX\mgmtapplauncher2.msi" "$(ProjectDir)WiX\mgmtapplauncher2.wixobj"
 )</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>copy "$(ProjectDir).git\refs\heads\master" "$(ProjectDir)Resources\GitCommit.txt"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

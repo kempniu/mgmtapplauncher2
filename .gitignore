@@ -116,3 +116,6 @@ App_Data/*.ldf
 WiX/*.msi
 WiX/*.wixobj
 Wix/*.wixpdb
+
+# Git commit information - dynamically generated via pre-build event
+Resources/GitCommit.txt
