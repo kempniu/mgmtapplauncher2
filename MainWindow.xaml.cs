@@ -1,168 +1,33 @@
 ﻿using mgmtapplauncher2.Language;
-using Microsoft.Win32;
 using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Windows;
-using System.Xml.Serialization;
 
 namespace mgmtapplauncher2
 {
 	public partial class MainWindow : Window
 	{
 
-		// Property bound to combobox
-		public ObservableCollection<Protocol> Protocols { get; set; }
-		private string latestVersion;
-
-		private void SaveRegistryKeyForProtocol(Protocol protocol)
-		{
-
-			try
-			{
-				Registry.CurrentUser.DeleteSubKeyTree("Software\\Classes\\" + protocol.Name);
-			}
-			catch (ArgumentException) { }
-
-			if (protocol.Handled)
-			{
-				// See: http://msdn.microsoft.com/en-us/library/aa767914%28v=vs.85%29.aspx
-				RegistryKey rk = Registry.CurrentUser.CreateSubKey("Software\\Classes\\" + protocol.Name);
-				rk.SetValue("", "URL:" + protocol.Name + " Protocol", RegistryValueKind.String);
-				rk.SetValue("URL Protocol", "", RegistryValueKind.String);
-				rk = rk.CreateSubKey("shell\\open\\command");
-				rk.SetValue("", "\"" + Application.ResourceAssembly.Location + "\" \"%1\"");
-			}
-
-		}
+		private Configuration c;
 
 		public MainWindow()
 		{
 
-			Protocols = new ObservableCollection<Protocol>();
-			DataContext = this;
-
-			bool defaultInit = false;
-			Protocol p = null;
-
-			if (File.Exists(App.GetConfigFile()) == false)
-			{
-				MessageBoxResult mbr = MessageBox.Show(
-					Strings.MessageConfigNotFound,
-					App.GetName(),
-					MessageBoxButton.YesNo,
-					MessageBoxImage.Question
-				);
-				if (mbr == MessageBoxResult.Yes)
-				{
-					defaultInit = true;
-					// Read whole text file resource, save as configuration file
-					File.WriteAllText(
-						App.GetConfigFile(),
-						new StreamReader(
-							System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("mgmtapplauncher2.Resources.DefaultConfig.xml")
-						).ReadToEnd()
-					);
-				}
-			}
-
-			try
-			{
-				XmlRootAttribute xra = new XmlRootAttribute("Protocols");
-				XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Protocol>), xra);
-				StreamReader tr = new StreamReader(App.GetConfigFile());
-				Protocols = (ObservableCollection<Protocol>)xs.Deserialize(tr);
-				tr.Close();
-			}
-			catch (FileNotFoundException)
-			{
-				// Assume the user will configure everything from scratch
-			}
-			catch (InvalidOperationException)
-			{
-				MessageBox.Show(
-					String.Format(Strings.MessageConfigCorrupt, App.GetConfigFile()),
-					App.GetName(),
-					MessageBoxButton.OK,
-					MessageBoxImage.Error
-				);
-			}
-
-			if (defaultInit)
-			{
-				foreach (Protocol protocol in Protocols)
-				{
-					protocol.Handled = true;
-					SaveRegistryKeyForProtocol(protocol);
-				}
-			}
-			else
-			{
-				foreach (Protocol protocol in Protocols)
-				{
-					try
-					{
-						RegistryKey rk = Registry.CurrentUser.OpenSubKey("Software\\Classes\\" + protocol.Name);
-						if (rk.GetValue("").ToString() == "URL:" + protocol.Name + " Protocol")
-						{
-							if (rk.GetValue("URL Protocol").ToString() == "")
-							{
-								if (rk.OpenSubKey("shell\\open\\command").GetValue("").ToString().IndexOf(Application.ResourceAssembly.Location) != -1)
-								{
-									protocol.Handled = true;
-								}
-							}
-						}
-					}
-					catch (NullReferenceException)
-					{
-						protocol.Handled = false;
-					}
-				}
-			}
+			c = new Configuration();
+			DataContext = c;
 
 			if (App.args.Length == 0)
 			{
-
 				InitializeComponent();
-
-				BackgroundWorker bw = new BackgroundWorker();
-				bw.DoWork += CheckForUpdates_GetLatestVersion;
-				bw.RunWorkerCompleted += CheckForUpdates_Update;
-				bw.RunWorkerAsync();
-
+				new UpdateChecker(this).RunWorkerAsync();
 			}
 			else
 			{
-
-				string uri = App.args[0];
-				int pos1;
-				int pos2;
-				string protocol;
-				string host;
-				int i = 0;
-				bool found = false;
-
 				try
 				{
-					pos1 = uri.IndexOf(':');
-					if (pos1 == -1 || uri.Substring(pos1, 3) != "://")
-						throw new ArgumentException();
-					protocol = uri.Substring(0, pos1);
-					pos1 += 3;
-					pos2 = uri.IndexOf('/', pos1);
-					if (pos2 == -1)
-						pos2 = uri.Length;
-					host = uri.Substring(pos1, pos2 - pos1);
+					new UriHandler(c, App.args[0]).Handle();
 				}
-				catch
+				catch (InvalidUriException)
 				{
-					protocol = "";
-					host = "";
 					MessageBox.Show(
 						Strings.MessageIncorrectURIFormat,
 						App.GetName(),
@@ -170,117 +35,27 @@ namespace mgmtapplauncher2
 						MessageBoxImage.Error
 					);
 				}
-
-				while (!found && i < Protocols.Count)
+				catch (ProtocolNotSupportedException e)
 				{
-					if (Protocols[i++].Name == protocol)
-						found = true;
-				}
-
-				if (!found)
-				{
-					if (protocol.Length > 0)
-						MessageBox.Show(
-							String.Format(Strings.MessageProtocolNotSupported, protocol),
-							App.GetName(),
-							MessageBoxButton.OK,
-							MessageBoxImage.Error
-						);
-				}
-				else
-				{
-					try
-					{
-						p = Protocols[i - 1];
-						Process process = new Process();
-						process.StartInfo.FileName = p.App;
-						process.StartInfo.Arguments = p.Args.Replace("%P%", protocol).Replace("%H%", host);
-						process.Start();
-					}
-					catch
-					{
-						MessageBox.Show(
-							String.Format(Strings.MessageFailedToStartProgram, p.App),
-							App.GetName(),
-							MessageBoxButton.OK,
-							MessageBoxImage.Error
-						);
-					}
-				}
-
-				this.Close();
-
-			}
-
-		}
-
-		private void CheckForUpdates_GetLatestVersion(object sender, DoWorkEventArgs e)
-		{
-			try
-			{
-				latestVersion = new WebClient().DownloadString("http://updates.kempniu.pl/mgmtapplauncher2/latest");
-			}
-			catch (WebException)
-			{
-				latestVersion = "";
-			}
-		}
-
-		private void CheckForUpdates_Update(object sender, RunWorkerCompletedEventArgs e)
-		{
-			try
-			{
-
-				Version current = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-				Version latest = new Version(latestVersion);
-
-				if (current.CompareTo(latest) < 0)
-				{
-
-					MessageBoxResult mbr = MessageBox.Show(
-						String.Format(Strings.MessageUpdateAvailable, latest, App.GetName()),
+					MessageBox.Show(
+						String.Format(Strings.MessageProtocolNotSupported, e.protocol),
 						App.GetName(),
-						MessageBoxButton.YesNo,
-						MessageBoxImage.Question
+						MessageBoxButton.OK,
+						MessageBoxImage.Error
 					);
-
-					if (mbr == MessageBoxResult.Yes)
-					{
-						try
-						{
-
-							string tempinstaller = Path.GetTempFileName();
-							string installer = Path.GetDirectoryName(tempinstaller) + "\\mgmtapplauncher2.msi";
-
-							new WebClient().DownloadFile("http://updates.kempniu.pl/mgmtapplauncher2/mgmtapplauncher2.msi", tempinstaller);
-
-							if (File.Exists(installer))
-								File.Delete(installer);
-							File.Move(tempinstaller, installer);
-
-							Process updater = new Process();
-							updater.StartInfo.FileName = "msiexec.exe";
-							updater.StartInfo.Arguments = "/i \"" + installer + "\" REINSTALL=ALL REINSTALLMODE=vomus";
-							updater.Start();
-
-							this.Close();
-
-						}
-						catch (WebException)
-						{
-							MessageBox.Show(
-								Strings.MessageUpdateDownloadFailed,
-								App.GetName(),
-								MessageBoxButton.OK,
-								MessageBoxImage.Error
-							);
-						}
-					}
-
 				}
-
+				catch (ProgramStartFailedException e)
+				{
+					MessageBox.Show(
+						String.Format(Strings.MessageFailedToStartProgram, e.program),
+						App.GetName(),
+						MessageBoxButton.OK,
+						MessageBoxImage.Error
+					);
+				}
+				this.Close();
 			}
-			catch { }
+
 		}
 
 		private void BBrowse_Click(object sender, RoutedEventArgs e)
@@ -289,63 +64,12 @@ namespace mgmtapplauncher2
 			ofd.Filter = Strings.FilterExecutableFiles;
 			Nullable<bool> result = ofd.ShowDialog();
 			if (result == true)
-				((Protocol)CBProtocol.SelectedItem).App = ofd.FileName;
+				c.SetProtocolApp((Protocol)CBProtocol.SelectedItem, ofd.FileName);
 		}
 
 		private void BSave_Click(object sender, RoutedEventArgs e)
 		{
-
-			var sortedProtocols = from p in Protocols orderby p.Name select p;
-			ObservableCollection<Protocol> sortedProtocolsCollection = new ObservableCollection<Protocol>();
-
-			foreach (var protocol in sortedProtocols)
-			{
-				// Do a pre-save sanity check
-				if (protocol.App == null)
-				{
-					CBProtocol.SelectedItem = protocol;
-					MessageBox.Show(
-						String.Format(Strings.MessageNoProtocolApp, protocol.Name),
-						App.GetName(),
-						MessageBoxButton.OK,
-						MessageBoxImage.Warning
-					);
-					return;
-				}
-				else
-				{
-					sortedProtocolsCollection.Add(protocol);
-					SaveRegistryKeyForProtocol(protocol);
-				}
-			}
-
-			try
-			{
-
-				XmlRootAttribute xra = new XmlRootAttribute("Protocols");
-				XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Protocol>), xra);
-				TextWriter tw = new StreamWriter(App.GetConfigFile());
-				xs.Serialize(tw, sortedProtocolsCollection);
-				tw.Close();
-
-				MessageBox.Show(
-					Strings.MessageSettingsSaved,
-					App.GetName(),
-					MessageBoxButton.OK,
-					MessageBoxImage.Information
-				);
-
-			}
-			catch
-			{
-				MessageBox.Show(
-					String.Format(Strings.MessageSettingsNotSaved, App.GetConfigFile()),
-					App.GetName(),
-					MessageBoxButton.OK,
-					MessageBoxImage.Error
-				);
-			}
-
+			c.Save();
 		}
 
 		private void BAdd_Click(object sender, RoutedEventArgs e)
@@ -353,7 +77,7 @@ namespace mgmtapplauncher2
 			ProtocolNamePopup pnp = new ProtocolNamePopup();
 			if (pnp.ShowDialog() == true)
 			{
-				Protocols.Add(new Protocol() { Name = pnp.name.ToLower(), Handled = true });
+				c.AddProtocol(pnp.name.ToLower(), true);
 				CBProtocol.SelectedIndex = CBProtocol.Items.Count - 1;
 			}
 		}
@@ -363,12 +87,7 @@ namespace mgmtapplauncher2
 			int selected = CBProtocol.SelectedIndex;
 			if (selected > -1)
 			{
-				try
-				{
-					Registry.CurrentUser.DeleteSubKeyTree("Software\\Classes\\" + ((Protocol)CBProtocol.SelectedItem).Name);
-				}
-				catch (ArgumentException) { }
-				Protocols.Remove((Protocol)CBProtocol.SelectedItem);
+				c.DeleteProtocol((Protocol)CBProtocol.SelectedItem);
 				CBProtocol.SelectedIndex = selected - 1;
 			}
 		}
