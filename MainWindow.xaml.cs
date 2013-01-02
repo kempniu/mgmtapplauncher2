@@ -299,5 +299,10 @@ namespace mgmtapplauncher2
 			this.Close();
 		}
 
+		private void MIAbout_Click(object sender, RoutedEventArgs e)
+		{
+			new AboutWindow().ShowDialog();
+		}
+
 	}
 }

@@ -196,6 +196,24 @@ namespace mgmtapplauncher2.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _About....
+        /// </summary>
+        public static string MenuItemAbout {
+            get {
+                return ResourceManager.GetString("MenuItemAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Help.
+        /// </summary>
+        public static string MenuItemHelp {
+            get {
+                return ResourceManager.GetString("MenuItemHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error parsing configuration file {0}!.
         /// </summary>
         public static string MessageConfigCorrupt {

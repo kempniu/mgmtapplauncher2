@@ -162,6 +162,12 @@
   <data name="LabelProtocol" xml:space="preserve">
     <value>Protocol:</value>
   </data>
+  <data name="MenuItemAbout" xml:space="preserve">
+    <value>_About...</value>
+  </data>
+  <data name="MenuItemHelp" xml:space="preserve">
+    <value>_Help</value>
+  </data>
   <data name="MessageConfigCorrupt" xml:space="preserve">
     <value>Error parsing configuration file {0}!</value>
   </data>

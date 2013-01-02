@@ -162,6 +162,12 @@
   <data name="LabelProtocol" xml:space="preserve">
     <value>Protokół:</value>
   </data>
+  <data name="MenuItemAbout" xml:space="preserve">
+    <value>_O programie...</value>
+  </data>
+  <data name="MenuItemHelp" xml:space="preserve">
+    <value>_Pomoc</value>
+  </data>
   <data name="MessageConfigCorrupt" xml:space="preserve">
     <value>Błąd podczas przetwarzania pliku konfiguracyjnego {0}!</value>
   </data>
