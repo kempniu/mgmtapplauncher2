@@ -110,6 +110,31 @@ namespace mgmtapplauncher2
 			);
 		}
 
+		private void MIAbout_Click(object sender, RoutedEventArgs e)
+		{
+			new AboutWindow().ShowDialog();
+		}
+
+		private void BAdd_Click(object sender, RoutedEventArgs e)
+		{
+			ProtocolNamePopup pnp = new ProtocolNamePopup();
+			if (pnp.ShowDialog() == true)
+			{
+				m_Configuration.AddProtocol(pnp.GetName().ToLower(), true);
+				CBProtocol.SelectedIndex = CBProtocol.Items.Count - 1;
+			}
+		}
+
+		private void BDelete_Click(object sender, RoutedEventArgs e)
+		{
+			int selected = CBProtocol.SelectedIndex;
+			if (selected > -1)
+			{
+				m_Configuration.DeleteProtocol((Protocol)CBProtocol.SelectedItem);
+				CBProtocol.SelectedIndex = selected - 1;
+			}
+		}
+
 		private void BBrowse_Click(object sender, RoutedEventArgs e)
 		{
 			Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
@@ -146,34 +171,9 @@ namespace mgmtapplauncher2
 			}
 		}
 
-		private void BAdd_Click(object sender, RoutedEventArgs e)
-		{
-			ProtocolNamePopup pnp = new ProtocolNamePopup();
-			if (pnp.ShowDialog() == true)
-			{
-				m_Configuration.AddProtocol(pnp.GetName().ToLower(), true);
-				CBProtocol.SelectedIndex = CBProtocol.Items.Count - 1;
-			}
-		}
-
-		private void BDelete_Click(object sender, RoutedEventArgs e)
-		{
-			int selected = CBProtocol.SelectedIndex;
-			if (selected > -1)
-			{
-				m_Configuration.DeleteProtocol((Protocol)CBProtocol.SelectedItem);
-				CBProtocol.SelectedIndex = selected - 1;
-			}
-		}
-
 		private void BQuit_Click(object sender, RoutedEventArgs e)
 		{
 			this.Close();
-		}
-
-		private void MIAbout_Click(object sender, RoutedEventArgs e)
-		{
-			new AboutWindow().ShowDialog();
 		}
 
 	}
