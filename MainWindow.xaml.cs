@@ -1,11 +1,14 @@
 ﻿using mgmtapplauncher2.Language;
 using Microsoft.Win32;
 using System;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace mgmtapplauncher2
 {
+
 	public partial class MainWindow : Window
 	{
 
@@ -212,4 +215,41 @@ namespace mgmtapplauncher2
 		}
 
 	}
+
+	public class GreaterThanZeroOrNot : IValueConverter
+	{
+
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			if ((int)value > 0)
+				return true;
+			else
+				return false;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			throw new System.NotImplementedException();
+		}
+
+	}
+
+	public class ShortenFilename : IValueConverter
+	{
+
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			string f = (string)value;
+			if (f != null && f.Length > 50)
+				f = f.Substring(0, 24) + "..." + f.Substring(f.Length - 24);
+			return f;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			throw new NotImplementedException();
+		}
+
+	}
+
 }
