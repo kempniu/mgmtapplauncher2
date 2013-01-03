@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace mgmtapplauncher2
 {
@@ -19,25 +20,19 @@ namespace mgmtapplauncher2
 		public void Handle()
 		{
 
-			int pos1;
-			int pos2;
 			string protocol;
 			string host;
 			Protocol p;
 
-			try
+			Regex r = new Regex("^(?'protocol'[a-z]+)://(?'host'[^/]+)/?$", RegexOptions.IgnoreCase);
+			Match m = r.Match(m_Uri);
+
+			if (m.Success)
 			{
-				pos1 = m_Uri.IndexOf(':');
-				if (pos1 == -1 || m_Uri.Substring(pos1, 3) != "://")
-					throw new ArgumentException();
-				protocol = m_Uri.Substring(0, pos1);
-				pos1 += 3;
-				pos2 = m_Uri.IndexOf('/', pos1);
-				if (pos2 == -1)
-					pos2 = m_Uri.Length;
-				host = m_Uri.Substring(pos1, pos2 - pos1);
+				protocol = m.Groups["protocol"].Value.ToLower();
+				host = m.Groups["host"].Value;
 			}
-			catch
+			else
 			{
 				throw new InvalidUriException();
 			}
