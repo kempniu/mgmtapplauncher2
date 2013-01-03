@@ -36,7 +36,7 @@ namespace mgmtapplauncher2
 			catch (InvalidOperationException)
 			{
 				MessageBox.Show(
-					String.Format(Strings.MessageConfigCorrupt, App.GetConfigFile()),
+					String.Format(Strings.MessageConfigCorrupt, Configuration.GetConfigFile()),
 					App.GetName(),
 					MessageBoxButton.OK,
 					MessageBoxImage.Error
@@ -166,7 +166,7 @@ namespace mgmtapplauncher2
 			catch (InvalidOperationException)
 			{
 				MessageBox.Show(
-					String.Format(Strings.MessageSettingsNotSaved, App.GetConfigFile()),
+					String.Format(Strings.MessageSettingsNotSaved, Configuration.GetConfigFile()),
 					App.GetName(),
 					MessageBoxButton.OK,
 					MessageBoxImage.Error

@@ -13,11 +13,6 @@ namespace mgmtapplauncher2
 			return System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
 		}
 
-		public static string GetConfigFile()
-		{
-			return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\mgmtapplauncher2.xml";
-		}
-
 		public static string[] GetArgs()
 		{
 			return m_Args;

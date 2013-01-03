@@ -41,7 +41,7 @@ namespace mgmtapplauncher2
 			{
 				// Read whole text file resource, save as configuration file
 				File.WriteAllText(
-					App.GetConfigFile(),
+					GetConfigFile(),
 					new StreamReader(
 						System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("mgmtapplauncher2.Resources.DefaultConfig.xml")
 					).ReadToEnd()
@@ -54,7 +54,7 @@ namespace mgmtapplauncher2
 				{
 					XmlRootAttribute xra = new XmlRootAttribute("Protocols");
 					XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Protocol>), xra);
-					StreamReader tr = new StreamReader(App.GetConfigFile());
+					StreamReader tr = new StreamReader(GetConfigFile());
 					Protocols = (ObservableCollection<Protocol>)xs.Deserialize(tr);
 					tr.Close();
 				}
@@ -135,7 +135,12 @@ namespace mgmtapplauncher2
 
 		public static bool Exists()
 		{
-			return File.Exists(App.GetConfigFile());
+			return File.Exists(Configuration.GetConfigFile());
+		}
+
+		public static string GetConfigFile()
+		{
+			return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\mgmtapplauncher2.xml";
 		}
 
 		public Protocol GetProtocol(string name)
@@ -202,7 +207,7 @@ namespace mgmtapplauncher2
 
 				XmlRootAttribute xra = new XmlRootAttribute("Protocols");
 				XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Protocol>), xra);
-				TextWriter tw = new StreamWriter(App.GetConfigFile());
+				TextWriter tw = new StreamWriter(GetConfigFile());
 				xs.Serialize(tw, sortedProtocolsCollection);
 				tw.Close();
 
