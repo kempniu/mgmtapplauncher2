@@ -73,21 +73,19 @@ namespace mgmtapplauncher2
 
 	public class ProtocolNotSupportedException : Exception
 	{
-		public string protocol;
-		public ProtocolNotSupportedException(string p)
-			: base(p)
+		public string m_Protocol;
+		public ProtocolNotSupportedException(string protocol)
 		{
-			protocol = p;
+			m_Protocol = protocol;
 		}
 	}
 
 	public class ProgramStartFailedException : Exception
 	{
-		public string program;
-		public ProgramStartFailedException(string p)
-			: base(p)
+		public string m_Program;
+		public ProgramStartFailedException(string program)
 		{
-			program = p;
+			m_Program = program;
 		}
 	}
 

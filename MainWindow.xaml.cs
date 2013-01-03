@@ -35,19 +35,19 @@ namespace mgmtapplauncher2
 						MessageBoxImage.Error
 					);
 				}
-				catch (ProtocolNotSupportedException e)
+				catch (ProtocolNotSupportedException exc)
 				{
 					MessageBox.Show(
-						String.Format(Strings.MessageProtocolNotSupported, e.protocol),
+						String.Format(Strings.MessageProtocolNotSupported, exc.m_Protocol),
 						App.GetName(),
 						MessageBoxButton.OK,
 						MessageBoxImage.Error
 					);
 				}
-				catch (ProgramStartFailedException e)
+				catch (ProgramStartFailedException exc)
 				{
 					MessageBox.Show(
-						String.Format(Strings.MessageFailedToStartProgram, e.program),
+						String.Format(Strings.MessageFailedToStartProgram, exc.m_Program),
 						App.GetName(),
 						MessageBoxButton.OK,
 						MessageBoxImage.Error
