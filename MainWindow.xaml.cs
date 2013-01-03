@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Globalization;
+using System.IO;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -239,10 +240,20 @@ namespace mgmtapplauncher2
 
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			string f = (string)value;
-			if (f != null && f.Length > 50)
-				f = f.Substring(0, 24) + "..." + f.Substring(f.Length - 24);
-			return f;
+
+			string p = (string)value;
+
+			if (p != null)
+			{
+				string f = Path.GetFileName(p);
+				if (f.Length > 40)
+					p = p.Substring(0, 3) + "..." + f.Substring(f.Length - 40);
+				else if (p.Length > 40)
+					p = p.Substring(0, 40 - f.Length) + "...\\" + f;
+			}
+
+			return p;
+
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
