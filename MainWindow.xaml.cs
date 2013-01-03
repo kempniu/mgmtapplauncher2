@@ -13,6 +13,7 @@ namespace mgmtapplauncher2
 		{
 
 			bool initializeWithDefaults = false;
+			bool loadConfigurationFile = true;
 
 			if (!Configuration.Exists())
 			{
@@ -24,11 +25,13 @@ namespace mgmtapplauncher2
 				);
 				if (mbr == MessageBoxResult.Yes)
 					initializeWithDefaults = true;
+				else
+					loadConfigurationFile = false;
 			}
 
 			try
 			{
-				m_Configuration = new Configuration(initializeWithDefaults, true);
+				m_Configuration = new Configuration(initializeWithDefaults, loadConfigurationFile);
 			}
 			catch (InvalidOperationException)
 			{
