@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Navigation;
 
 namespace mgmtapplauncher2
 {
@@ -8,8 +12,8 @@ namespace mgmtapplauncher2
 		public AboutWindow()
 		{
 			InitializeComponent();
-			LBuild.Content = "Build: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-			LGit.Content = "GIT: " + new System.IO.StreamReader(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("mgmtapplauncher2.Resources.GitCommit.txt")).ReadToEnd().Trim();
+			LBuild.Content = "Build: " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			LGit.Content = "GIT: " + new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("mgmtapplauncher2.Resources.GitCommit.txt")).ReadToEnd().Trim();
 		}
 
 		private void BOK_Click(object sender, RoutedEventArgs e)
@@ -17,9 +21,9 @@ namespace mgmtapplauncher2
 			DialogResult = true;
 		}
 
-		private void VisitHomepage(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+		private void VisitHomepage(object sender, RequestNavigateEventArgs e)
 		{
-			System.Diagnostics.Process.Start(e.Uri.ToString());
+			Process.Start(e.Uri.ToString());
 		}
 
 	}

@@ -1,5 +1,4 @@
 ﻿using mgmtapplauncher2.Language;
-using System;
 using System.Windows;
 
 namespace mgmtapplauncher2

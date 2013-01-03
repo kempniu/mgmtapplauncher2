@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Reflection;
 using System.Windows;
 
 namespace mgmtapplauncher2
@@ -10,7 +10,7 @@ namespace mgmtapplauncher2
 
 		public static string GetName()
 		{
-			return System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
+			return Assembly.GetEntryAssembly().GetName().Name;
 		}
 
 		public static string[] GetArgs()

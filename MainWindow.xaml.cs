@@ -1,4 +1,5 @@
 ﻿using mgmtapplauncher2.Language;
+using Microsoft.Win32;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -143,7 +144,7 @@ namespace mgmtapplauncher2
 
 		private void BBrowse_Click(object sender, RoutedEventArgs e)
 		{
-			Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+			OpenFileDialog ofd = new OpenFileDialog();
 			ofd.Filter = Strings.FilterExecutableFiles;
 			Nullable<bool> result = ofd.ShowDialog();
 			if (result == true)

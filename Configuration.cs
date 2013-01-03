@@ -1,11 +1,11 @@
-﻿using mgmtapplauncher2.Language;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Xml.Serialization;
 
@@ -47,7 +47,7 @@ namespace mgmtapplauncher2
 				File.WriteAllText(
 					GetConfigFile(),
 					new StreamReader(
-						System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("mgmtapplauncher2.Resources.DefaultConfig.xml")
+						Assembly.GetExecutingAssembly().GetManifestResourceStream("mgmtapplauncher2.Resources.DefaultConfig.xml")
 					).ReadToEnd()
 				);
 			}

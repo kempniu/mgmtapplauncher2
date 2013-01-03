@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Windows;
+using System.Reflection;
 
 namespace mgmtapplauncher2
 {
@@ -38,7 +38,7 @@ namespace mgmtapplauncher2
 			try
 			{
 
-				Version current = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+				Version current = Assembly.GetExecutingAssembly().GetName().Version;
 				Version latest = new Version(m_LatestVersion);
 
 				if (current.CompareTo(latest) < 0 && m_Parent.AskToUpdate(latest.ToString()))

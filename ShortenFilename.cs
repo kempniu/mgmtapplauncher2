@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows.Data;
 
 namespace mgmtapplauncher2
@@ -6,7 +7,7 @@ namespace mgmtapplauncher2
 	class ShortenFilename : IValueConverter
 	{
 
-		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			string f = (string)value;
 			if (f != null && f.Length > 50)
@@ -14,7 +15,7 @@ namespace mgmtapplauncher2
 			return f;
 		}
 
-		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			throw new NotImplementedException();
 		}
