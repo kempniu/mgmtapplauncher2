@@ -69,7 +69,20 @@ namespace mgmtapplauncher2
 
 		private void BSave_Click(object sender, RoutedEventArgs e)
 		{
-			m_Configuration.Save();
+			try
+			{
+				m_Configuration.Save();
+			}
+			catch (NoAppProtocolException exc)
+			{
+				CBProtocol.SelectedItem = exc.m_protocol;
+				MessageBox.Show(
+					String.Format(Strings.MessageNoProtocolApp, exc.m_protocol.Name),
+					App.GetName(),
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning
+				);
+			}
 		}
 
 		private void BAdd_Click(object sender, RoutedEventArgs e)

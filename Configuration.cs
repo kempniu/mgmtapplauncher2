@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 
 namespace mgmtapplauncher2
 {
+
 	class Configuration
 	{
 
@@ -148,14 +149,7 @@ namespace mgmtapplauncher2
 				// Do a pre-save sanity check
 				if (protocol.App == null)
 				{
-					//CBProtocol.SelectedItem = protocol;
-					MessageBox.Show(
-						String.Format(Strings.MessageNoProtocolApp, protocol.Name),
-						App.GetName(),
-						MessageBoxButton.OK,
-						MessageBoxImage.Warning
-					);
-					return;
+					throw new NoAppProtocolException(protocol);
 				}
 				else
 				{
@@ -215,4 +209,14 @@ namespace mgmtapplauncher2
 		}
 
 	}
+
+	public class NoAppProtocolException : Exception
+	{
+		public Protocol m_protocol;
+		public NoAppProtocolException(Protocol protocol)
+		{
+			m_protocol = protocol;
+		}
+	}
+
 }
