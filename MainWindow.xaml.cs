@@ -28,7 +28,7 @@ namespace mgmtapplauncher2
 
 			try
 			{
-				m_Configuration = new Configuration(initializeWithDefaults);
+				m_Configuration = new Configuration(initializeWithDefaults, true);
 			}
 			catch (InvalidOperationException)
 			{
@@ -38,7 +38,7 @@ namespace mgmtapplauncher2
 					MessageBoxButton.OK,
 					MessageBoxImage.Error
 				);
-				this.Close();
+				m_Configuration = new Configuration(initializeWithDefaults, false);
 			}
 
 			DataContext = m_Configuration;

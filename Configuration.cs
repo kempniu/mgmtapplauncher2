@@ -32,11 +32,10 @@ namespace mgmtapplauncher2
 			}
 		}
 
-		public Configuration(bool initializeWithDefaults)
+		public Configuration(bool initializeWithDefaults, bool loadConfigurationFile)
 		{
 
 			m_IsConfigurationChanged = false;
-			Protocols = new ObservableCollection<Protocol>();
 
 			if (initializeWithDefaults)
 			{
@@ -49,21 +48,28 @@ namespace mgmtapplauncher2
 				);
 			}
 
-			try
+			if (loadConfigurationFile)
 			{
-				XmlRootAttribute xra = new XmlRootAttribute("Protocols");
-				XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Protocol>), xra);
-				StreamReader tr = new StreamReader(App.GetConfigFile());
-				Protocols = (ObservableCollection<Protocol>)xs.Deserialize(tr);
-				tr.Close();
+				try
+				{
+					XmlRootAttribute xra = new XmlRootAttribute("Protocols");
+					XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Protocol>), xra);
+					StreamReader tr = new StreamReader(App.GetConfigFile());
+					Protocols = (ObservableCollection<Protocol>)xs.Deserialize(tr);
+					tr.Close();
+				}
+				catch (FileNotFoundException)
+				{
+					// Assume the user will configure everything from scratch
+				}
+				catch (InvalidOperationException exc)
+				{
+					throw exc;
+				}
 			}
-			catch (FileNotFoundException)
+			else
 			{
-				// Assume the user will configure everything from scratch
-			}
-			catch (InvalidOperationException exc)
-			{
-				throw exc;
+				Protocols = new ObservableCollection<Protocol>();
 			}
 
 			if (initializeWithDefaults)
