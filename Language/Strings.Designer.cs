@@ -232,6 +232,15 @@ namespace mgmtapplauncher2.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration was changed. Would you like to save it?.
+        /// </summary>
+        public static string MessageConfigUnsaved {
+            get {
+                return ResourceManager.GetString("MessageConfigUnsaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Protocol name cannot be empty!.
         /// </summary>
         public static string MessageEmptyProtocolName {

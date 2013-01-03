@@ -151,9 +151,37 @@ namespace mgmtapplauncher2
 
 		private void BSave_Click(object sender, RoutedEventArgs e)
 		{
+			Save(false);
+		}
+
+		private void BQuit_Click(object sender, RoutedEventArgs e)
+		{
+			if (m_Configuration.IsConfigurationChanged)
+			{
+				MessageBoxResult mbr = MessageBox.Show(
+					Strings.MessageConfigUnsaved,
+					App.GetName(),
+					MessageBoxButton.YesNoCancel,
+					MessageBoxImage.Question
+				);
+				if (mbr == MessageBoxResult.Yes)
+					Save(true);
+				else if (mbr == MessageBoxResult.No)
+					this.Close();
+			}
+			else
+			{
+				this.Close();
+			}
+		}
+
+		private void Save(bool close)
+		{
 			try
 			{
 				m_Configuration.Save();
+				if (close)
+					this.Close();
 			}
 			catch (NoAppProtocolException exc)
 			{
@@ -174,11 +202,6 @@ namespace mgmtapplauncher2
 					MessageBoxImage.Error
 				);
 			}
-		}
-
-		private void BQuit_Click(object sender, RoutedEventArgs e)
-		{
-			this.Close();
 		}
 
 	}
