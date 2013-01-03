@@ -7,11 +7,25 @@ namespace mgmtapplauncher2
 	public class Protocol : INotifyPropertyChanged
 	{
 
+		private bool m_Handled;
 		private string m_App;
+		private string m_Args;
 
 		public string Name { get; set; }
+
 		[XmlIgnore]
-		public bool Handled { get; set; }
+		public bool Handled {
+			get
+			{
+				return m_Handled;
+			}
+			set
+			{
+				m_Handled = value;
+				NotifyPropertyChanged("Handled");
+			}
+		}
+
 		public string App
 		{
 			get
@@ -24,7 +38,19 @@ namespace mgmtapplauncher2
 				NotifyPropertyChanged("App");
 			}
 		}
-		public string Args { get; set; }
+
+		public string Args
+		{
+			get
+			{
+				return m_Args;
+			}
+			set
+			{
+				m_Args = value;
+				NotifyPropertyChanged("Args");
+			}
+		}
 
 		public Protocol()
 		{

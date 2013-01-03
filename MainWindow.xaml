@@ -39,13 +39,13 @@
                     <Label Content="{x:Static t:Strings.LabelApplication}" Grid.Row="1" VerticalAlignment="Center"/>
                     <TextBlock x:Name="TBApp" Background="#FFCFCFCF" Foreground="Black" Grid.Column="1" Grid.Row="1" Margin="10" Padding="2" Text="{Binding SelectedItem.App, ElementName=CBProtocol, Converter={StaticResource ShortenFilename}}" ToolTip="{Binding SelectedItem.App, ElementName=CBProtocol}" VerticalAlignment="Center"/>
                     <Label Grid.Row="2" Content="{x:Static t:Strings.LabelParameters}" VerticalAlignment="Center"/>
-                    <TextBox x:Name="TBArgs" Grid.Column="1" Grid.Row="2" Margin="10,10,10,0" Text="{Binding SelectedItem.Args, ElementName=CBProtocol}"/>
+                    <TextBox x:Name="TBArgs" Grid.Column="1" Grid.Row="2" Margin="10,10,10,0" Text="{Binding SelectedItem.Args, ElementName=CBProtocol, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button x:Name="BBrowse" Click="BBrowse_Click" Content="..." Grid.Column="2" Grid.Row="1" Margin="10"/>
                     <Label Content="{x:Static t:Strings.LabelParametersTip}" FontStyle="Italic" Foreground="#FFA8A8A8" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Top"/>
                 </Grid>
             </GroupBox>
             <StackPanel Height="25" HorizontalAlignment="Center" Orientation="Horizontal">
-                <Button x:Name="BSave" Click="BSave_Click" Content="{x:Static t:Strings.ButtonSave}" Width="100"/>
+                <Button x:Name="BSave" Click="BSave_Click" Content="{x:Static t:Strings.ButtonSave}" IsEnabled="{Binding IsConfigurationChanged}" Width="100"/>
                 <Button x:Name="BQuit" Click="BQuit_Click" Content="{x:Static t:Strings.ButtonQuit}" Margin="20,0,0,0" Width="100"/>
             </StackPanel>
         </StackPanel>

@@ -2,6 +2,8 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -10,14 +12,30 @@ using System.Xml.Serialization;
 namespace mgmtapplauncher2
 {
 
-	class Configuration
+	class Configuration : INotifyPropertyChanged
 	{
 
+		private bool m_IsConfigurationChanged;
+
 		public ObservableCollection<Protocol> Protocols { get; set; }
+
+		public bool IsConfigurationChanged
+		{
+			get
+			{
+				return m_IsConfigurationChanged;
+			}
+			set
+			{
+				m_IsConfigurationChanged = value;
+				NotifyPropertyChanged("IsConfigurationChanged");
+			}
+		}
 
 		public Configuration()
 		{
 
+			m_IsConfigurationChanged = false;
 			Protocols = new ObservableCollection<Protocol>();
 			bool defaultInit = false;
 
@@ -97,6 +115,32 @@ namespace mgmtapplauncher2
 				}
 			}
 
+			// Configuration is changed when protocols are added or deleted
+			Protocols.CollectionChanged += ConfigurationChanged;
+			// Install change handlers for deserialized protocols
+			foreach (Protocol protocol in Protocols)
+				protocol.PropertyChanged += ConfigurationChanged;
+
+		}
+
+		// This method takes care of monitoring protocol list changes
+		private void ConfigurationChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			if (e.OldItems != null)
+				foreach (Protocol p in e.OldItems)
+					p.PropertyChanged -= ConfigurationChanged;
+			if (e.NewItems != null)
+				foreach (Protocol p in e.NewItems)
+					p.PropertyChanged += ConfigurationChanged;
+			m_IsConfigurationChanged = true;
+			NotifyPropertyChanged("IsConfigurationChanged");
+		}
+
+		// This method takes care of monitoring protocol changes
+		private void ConfigurationChanged(object sender, PropertyChangedEventArgs e)
+		{
+			m_IsConfigurationChanged = true;
+			NotifyPropertyChanged("IsConfigurationChanged");
 		}
 
 		public Protocol GetProtocol(string name)
@@ -207,6 +251,21 @@ namespace mgmtapplauncher2
 			}
 
 		}
+
+		#region INotifyPropertyChanged Members
+
+		// Need to implement this interface in order to get data binding to work properly
+		private void NotifyPropertyChanged(string propertyName)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		#endregion
 
 	}
 
