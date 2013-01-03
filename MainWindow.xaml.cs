@@ -12,7 +12,35 @@ namespace mgmtapplauncher2
 		public MainWindow()
 		{
 
-			m_Configuration = new Configuration();
+			bool initializeWithDefaults = false;
+
+			if (!Configuration.Exists())
+			{
+				MessageBoxResult mbr = MessageBox.Show(
+					Strings.MessageConfigNotFound,
+					App.GetName(),
+					MessageBoxButton.YesNo,
+					MessageBoxImage.Question
+				);
+				if (mbr == MessageBoxResult.Yes)
+					initializeWithDefaults = true;
+			}
+
+			try
+			{
+				m_Configuration = new Configuration(initializeWithDefaults);
+			}
+			catch (InvalidOperationException)
+			{
+				MessageBox.Show(
+					String.Format(Strings.MessageConfigCorrupt, App.GetConfigFile()),
+					App.GetName(),
+					MessageBoxButton.OK,
+					MessageBoxImage.Error
+				);
+				this.Close();
+			}
+
 			DataContext = m_Configuration;
 
 			if (App.GetArgs().Length == 0)
@@ -58,6 +86,30 @@ namespace mgmtapplauncher2
 
 		}
 
+		public bool AskToUpdate(string latestVersion)
+		{
+			bool retval = false;
+			MessageBoxResult mbr = MessageBox.Show(
+				String.Format(Strings.MessageUpdateAvailable, latestVersion, App.GetName()),
+				App.GetName(),
+				MessageBoxButton.YesNo,
+				MessageBoxImage.Question
+			);
+			if (mbr == MessageBoxResult.Yes)
+				retval = true;
+			return retval;
+		}
+
+		public void DisplayErrorMessage(string message)
+		{
+			MessageBox.Show(
+				message,
+				App.GetName(),
+				MessageBoxButton.OK,
+				MessageBoxImage.Error
+			);
+		}
+
 		private void BBrowse_Click(object sender, RoutedEventArgs e)
 		{
 			Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
@@ -81,6 +133,15 @@ namespace mgmtapplauncher2
 					App.GetName(),
 					MessageBoxButton.OK,
 					MessageBoxImage.Warning
+				);
+			}
+			catch (InvalidOperationException)
+			{
+				MessageBox.Show(
+					String.Format(Strings.MessageSettingsNotSaved, App.GetConfigFile()),
+					App.GetName(),
+					MessageBoxButton.OK,
+					MessageBoxImage.Error
 				);
 			}
 		}

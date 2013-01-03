@@ -32,32 +32,21 @@ namespace mgmtapplauncher2
 			}
 		}
 
-		public Configuration()
+		public Configuration(bool initializeWithDefaults)
 		{
 
 			m_IsConfigurationChanged = false;
 			Protocols = new ObservableCollection<Protocol>();
-			bool defaultInit = false;
 
-			if (File.Exists(App.GetConfigFile()) == false)
+			if (initializeWithDefaults)
 			{
-				MessageBoxResult mbr = MessageBox.Show(
-					Strings.MessageConfigNotFound,
-					App.GetName(),
-					MessageBoxButton.YesNo,
-					MessageBoxImage.Question
+				// Read whole text file resource, save as configuration file
+				File.WriteAllText(
+					App.GetConfigFile(),
+					new StreamReader(
+						System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("mgmtapplauncher2.Resources.DefaultConfig.xml")
+					).ReadToEnd()
 				);
-				if (mbr == MessageBoxResult.Yes)
-				{
-					defaultInit = true;
-					// Read whole text file resource, save as configuration file
-					File.WriteAllText(
-						App.GetConfigFile(),
-						new StreamReader(
-							System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("mgmtapplauncher2.Resources.DefaultConfig.xml")
-						).ReadToEnd()
-					);
-				}
 			}
 
 			try
@@ -72,17 +61,12 @@ namespace mgmtapplauncher2
 			{
 				// Assume the user will configure everything from scratch
 			}
-			catch (InvalidOperationException)
+			catch (InvalidOperationException exc)
 			{
-				MessageBox.Show(
-					String.Format(Strings.MessageConfigCorrupt, App.GetConfigFile()),
-					App.GetName(),
-					MessageBoxButton.OK,
-					MessageBoxImage.Error
-				);
+				throw exc;
 			}
 
-			if (defaultInit)
+			if (initializeWithDefaults)
 			{
 				foreach (Protocol protocol in Protocols)
 				{
@@ -141,6 +125,11 @@ namespace mgmtapplauncher2
 		{
 			m_IsConfigurationChanged = true;
 			NotifyPropertyChanged("IsConfigurationChanged");
+		}
+
+		public static bool Exists()
+		{
+			return File.Exists(App.GetConfigFile());
 		}
 
 		public Protocol GetProtocol(string name)
@@ -217,12 +206,7 @@ namespace mgmtapplauncher2
 			}
 			catch
 			{
-				MessageBox.Show(
-					String.Format(Strings.MessageSettingsNotSaved, App.GetConfigFile()),
-					App.GetName(),
-					MessageBoxButton.OK,
-					MessageBoxImage.Error
-				);
+				throw new InvalidOperationException();
 			}
 
 		}
