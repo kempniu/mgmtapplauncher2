@@ -192,9 +192,6 @@
   <data name="MessageSettingsNotSaved" xml:space="preserve">
     <value>Error saving settings to {0}!</value>
   </data>
-  <data name="MessageSettingsSaved" xml:space="preserve">
-    <value>Settings saved!</value>
-  </data>
   <data name="MessageUpdateAvailable" xml:space="preserve">
     <value>A newer version ({0}) of {1} is available. Would you like to install it?</value>
   </data>

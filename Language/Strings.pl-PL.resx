@@ -192,9 +192,6 @@
   <data name="MessageSettingsNotSaved" xml:space="preserve">
     <value>Błąd podczas zapisywania ustawień do {0}!</value>
   </data>
-  <data name="MessageSettingsSaved" xml:space="preserve">
-    <value>Ustawienia zostały zapisane!</value>
-  </data>
   <data name="MessageUpdateAvailable" xml:space="preserve">
     <value>Dostępna jest nowsza wersja ({0}) programu {1}. Czy chcesz ją zainstalować?</value>
   </data>

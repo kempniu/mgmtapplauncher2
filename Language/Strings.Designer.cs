@@ -286,15 +286,6 @@ namespace mgmtapplauncher2.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Settings saved!.
-        /// </summary>
-        public static string MessageSettingsSaved {
-            get {
-                return ResourceManager.GetString("MessageSettingsSaved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to A newer version ({0}) of {1} is available. Would you like to install it?.
         /// </summary>
         public static string MessageUpdateAvailable {

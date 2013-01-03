@@ -211,12 +211,8 @@ namespace mgmtapplauncher2
 				xs.Serialize(tw, sortedProtocolsCollection);
 				tw.Close();
 
-				MessageBox.Show(
-					Strings.MessageSettingsSaved,
-					App.GetName(),
-					MessageBoxButton.OK,
-					MessageBoxImage.Information
-				);
+				m_IsConfigurationChanged = false;
+				NotifyPropertyChanged("IsConfigurationChanged");
 
 			}
 			catch
