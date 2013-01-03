@@ -64,6 +64,7 @@
     <Compile Include="AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GreaterThanZeroOrNot.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Language\Strings.pl-PL.Designer.cs">
       <DependentUpon>Strings.pl-PL.resx</DependentUpon>

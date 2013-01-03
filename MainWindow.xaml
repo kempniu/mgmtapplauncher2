@@ -14,6 +14,7 @@
         <KeyBinding Command="Close" Key="Q" Modifiers="Control"/>
     </Window.InputBindings>
     <Window.Resources>
+        <local:GreaterThanZeroOrNot x:Key="GreaterThanZeroOrNot"/>
         <local:ShortenFilename x:Key="ShortenFilename"/>
     </Window.Resources>
     <DockPanel>
@@ -25,7 +26,7 @@
         <StackPanel VerticalAlignment="Center">
             <StackPanel Height="25" HorizontalAlignment="Center" Orientation="Horizontal">
                 <TextBlock Text="{x:Static t:Strings.LabelProtocol}" VerticalAlignment="Center"/>
-                <ComboBox x:Name="CBProtocol" DisplayMemberPath="Name" ItemsSource="{Binding Protocols}" Margin="10,0,0,0" SelectedIndex="0" Width="100"/>
+                <ComboBox x:Name="CBProtocol" DisplayMemberPath="Name" IsEnabled="{Binding Protocols.Count, Converter={StaticResource GreaterThanZeroOrNot}}" ItemsSource="{Binding Protocols}" Margin="10,0,0,0" SelectedIndex="0" Width="100"/>
                 <Button x:Name="BAdd" Click="BAdd_Click" Content="{x:Static t:Strings.ButtonAdd}" Margin="10,0,0,0" Width="75"/>
                 <Button x:Name="BDelete" Click="BDelete_Click" Content="{x:Static t:Strings.ButtonDelete}" Margin="10,0,0,0" Width="75"/>
             </StackPanel>
