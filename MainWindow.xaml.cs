@@ -1,6 +1,7 @@
 ﻿using mgmtapplauncher2.Language;
 using System;
 using System.Windows;
+using System.Windows.Input;
 
 namespace mgmtapplauncher2
 {
@@ -149,12 +150,17 @@ namespace mgmtapplauncher2
 				m_Configuration.SetProtocolApp((Protocol)CBProtocol.SelectedItem, ofd.FileName);
 		}
 
-		private void BSave_Click(object sender, RoutedEventArgs e)
+		private void SaveCanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = m_Configuration.IsConfigurationChanged;
+		}
+
+		private void SaveExecute(object sender, ExecutedRoutedEventArgs e)
 		{
 			Save(false);
 		}
 
-		private void BQuit_Click(object sender, RoutedEventArgs e)
+		private void CloseExecute(object sender, ExecutedRoutedEventArgs e)
 		{
 			if (m_Configuration.IsConfigurationChanged)
 			{

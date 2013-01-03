@@ -5,6 +5,14 @@
         xmlns:t="clr-namespace:mgmtapplauncher2.Language"
         x:Class="mgmtapplauncher2.MainWindow"
         Height="325" Icon="Resources/mgmtapplauncher2.ico" ResizeMode="NoResize" Title="{x:Static t:Strings.TitleMainWindow}" Width="500">
+    <Window.CommandBindings>
+        <CommandBinding Command="Save" CanExecute="SaveCanExecute" Executed="SaveExecute"/>
+        <CommandBinding Command="Close" Executed="CloseExecute"/>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="Save" Key="S" Modifiers="Control"/>
+        <KeyBinding Command="Close" Key="Q" Modifiers="Control"/>
+    </Window.InputBindings>
     <Window.Resources>
         <local:ShortenFilename x:Key="ShortenFilename"/>
     </Window.Resources>
@@ -45,8 +53,8 @@
                 </Grid>
             </GroupBox>
             <StackPanel Height="25" HorizontalAlignment="Center" Orientation="Horizontal">
-                <Button x:Name="BSave" Click="BSave_Click" Content="{x:Static t:Strings.ButtonSave}" IsEnabled="{Binding IsConfigurationChanged}" Width="100"/>
-                <Button x:Name="BQuit" Click="BQuit_Click" Content="{x:Static t:Strings.ButtonQuit}" Margin="20,0,0,0" Width="100"/>
+                <Button x:Name="BSave" Command="Save" Content="{x:Static t:Strings.ButtonSave}" IsEnabled="{Binding IsConfigurationChanged}" Width="100"/>
+                <Button x:Name="BQuit" Command="Close" Content="{x:Static t:Strings.ButtonQuit}" Margin="20,0,0,0" Width="100"/>
             </StackPanel>
         </StackPanel>
     </DockPanel>
