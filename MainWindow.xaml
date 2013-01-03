@@ -6,10 +6,12 @@
         x:Class="mgmtapplauncher2.MainWindow"
         Height="325" Icon="Resources/mgmtapplauncher2.ico" ResizeMode="NoResize" Title="{x:Static t:Strings.TitleMainWindow}" Width="500">
     <Window.CommandBindings>
+        <CommandBinding Command="Help" Executed="AboutExecute"/>
         <CommandBinding Command="Save" CanExecute="SaveCanExecute" Executed="SaveExecute"/>
         <CommandBinding Command="Close" Executed="CloseExecute"/>
     </Window.CommandBindings>
     <Window.InputBindings>
+        <KeyBinding Command="Help" Key="F1"/>
         <KeyBinding Command="Save" Key="S" Modifiers="Control"/>
         <KeyBinding Command="Close" Key="Q" Modifiers="Control"/>
     </Window.InputBindings>
@@ -20,7 +22,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{x:Static t:Strings.MenuItemHelp}">
-                <MenuItem Click="MIAbout_Click" Header="{x:Static t:Strings.MenuItemAbout}"/>
+                <MenuItem Command="Help" Header="{x:Static t:Strings.MenuItemAbout}"/>
             </MenuItem>
         </Menu>
         <StackPanel VerticalAlignment="Center">

@@ -120,7 +120,7 @@ namespace mgmtapplauncher2
 			);
 		}
 
-		private void MIAbout_Click(object sender, RoutedEventArgs e)
+		private void AboutExecute(object sender, ExecutedRoutedEventArgs e)
 		{
 			new AboutWindow().ShowDialog();
 		}
