@@ -32,7 +32,11 @@ namespace mgmtapplauncher2
 			}
 		}
 
-		public Configuration(bool initializeWithDefaults, bool loadConfigurationFile)
+		public Configuration()
+		{
+		}
+
+		public void Initialize(bool initializeWithDefaults, bool loadConfigurationFile)
 		{
 
 			m_IsConfigurationChanged = false;
@@ -133,12 +137,12 @@ namespace mgmtapplauncher2
 			NotifyPropertyChanged("IsConfigurationChanged");
 		}
 
-		public static bool Exists()
+		public bool ConfigFileExists()
 		{
-			return File.Exists(Configuration.GetConfigFile());
+			return File.Exists(GetConfigFile());
 		}
 
-		public static string GetConfigFile()
+		public string GetConfigFile()
 		{
 			return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\mgmtapplauncher2.xml";
 		}

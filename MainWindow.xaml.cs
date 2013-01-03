@@ -15,7 +15,9 @@ namespace mgmtapplauncher2
 			bool initializeWithDefaults = false;
 			bool loadConfigurationFile = true;
 
-			if (!Configuration.Exists())
+			m_Configuration = new Configuration();
+
+			if (!m_Configuration.ConfigFileExists())
 			{
 				MessageBoxResult mbr = MessageBox.Show(
 					Strings.MessageConfigNotFound,
@@ -31,17 +33,17 @@ namespace mgmtapplauncher2
 
 			try
 			{
-				m_Configuration = new Configuration(initializeWithDefaults, loadConfigurationFile);
+				m_Configuration.Initialize(initializeWithDefaults, loadConfigurationFile);
 			}
 			catch (InvalidOperationException)
 			{
 				MessageBox.Show(
-					String.Format(Strings.MessageConfigCorrupt, Configuration.GetConfigFile()),
+					String.Format(Strings.MessageConfigCorrupt, m_Configuration.GetConfigFile()),
 					App.GetName(),
 					MessageBoxButton.OK,
 					MessageBoxImage.Error
 				);
-				m_Configuration = new Configuration(initializeWithDefaults, false);
+				m_Configuration.Initialize(initializeWithDefaults, false);
 			}
 
 			DataContext = m_Configuration;
@@ -166,7 +168,7 @@ namespace mgmtapplauncher2
 			catch (InvalidOperationException)
 			{
 				MessageBox.Show(
-					String.Format(Strings.MessageSettingsNotSaved, Configuration.GetConfigFile()),
+					String.Format(Strings.MessageSettingsNotSaved, m_Configuration.GetConfigFile()),
 					App.GetName(),
 					MessageBoxButton.OK,
 					MessageBoxImage.Error
