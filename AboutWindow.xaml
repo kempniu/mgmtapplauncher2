@@ -14,6 +14,6 @@
                 <Run x:Name="RHomepage" Text="http://github.com/kempniu/mgmtapplauncher2"/>
             </Hyperlink>
         </TextBlock>
-        <Button x:Name="BOK" Click="BOK_Click" Content="{x:Static t:Strings.ButtonOK}" Margin="0,15,0,0" Padding="3" Width="150"/>
+        <Button x:Name="BOK" Click="BOK_Click" Content="{x:Static t:Strings.ButtonOK}" IsCancel="True" IsDefault="True" Margin="0,15,0,0" Padding="3" Width="150"/>
     </StackPanel>
 </Window>
